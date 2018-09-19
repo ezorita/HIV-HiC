@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+from src import hic_basics
+import cooler
+import os
+
+for directory in ['clusters/raw3_none', 'clusters/raw3_ice', 'clusters/oe_none', 'clusters/oe_ice', 'figures_all']:
+   if not os.path.exists(directory):
+      os.makedirs(directory)
+
+cf = cooler.Cooler('cool/WT_hg19_5k_q10.cool')
+
+# NO diagonal normalization (delete 3 diags) and NO rowsum normalization.
+hic_basics.cluster_compartments(cf=cf, k=15, chrlist=cf.chromnames, use_builtin_ice=False, use_oe=False, use_cpb=False, use_ice=False, rm_diags=3, outdir='clusters/raw3_none')
+hic_basics.interchromosomal_clusters(cf=cf, cluster_file='clusters/raw3_none/clusters_all.txt', k=5, mat_save_dir='clusters/raw3_none/', use_builtin_ice=False, use_cpb=False, use_ice=False, out_file='clusters/raw3_none/global_clusters.out')
+
+# NO diagonal normalization (delete 3 diags) and ICE rowsum normalization.
+hic_basics.cluster_compartments(cf=cf, k=15, chrlist=cf.chromnames, use_builtin_ice=False, use_oe=False, use_cpb=False, use_ice=True, rm_diags=3, outdir='clusters/raw3_ice')
+hic_basics.interchromosomal_clusters(cf=cf, cluster_file='clusters/raw3_ice/clusters_all.txt', k=5, mat_save_dir='clusters/raw3_ice/', use_builtin_ice=False, use_cpb=False, use_ice=False, out_file='clusters/raw3_ice/global_clusters.out')
+
+# OE normalization and no rowsum normalization.
+hic_basics.cluster_compartments(cf=cf, k=15, chrlist=cf.chromnames, use_builtin_ice=False, use_oe=True, use_cpb=False, use_ice=False, rm_diags=0, outdir='clusters/oe_none')
+hic_basics.interchromosomal_clusters(cf=cf, cluster_file='clusters/oe_none/clusters_all.txt', k=5, mat_save_dir='clusters/oe_none/', use_builtin_ice=False, use_cpb=False, use_ice=False, out_file='clusters/oe_none/global_clusters.out')
+
+# OE normalization and ICE rowsum normalization
+hic_basics.cluster_compartments(cf=cf, k=15, chrlist=cf.chromnames, use_builtin_ice=False, use_oe=True, use_cpb=False, use_ice=True, rm_diags=0, outdir='clusters/oe_ice')
+hic_basics.interchromosomal_clusters(cf=cf, cluster_file='clusters/oe_ice/clusters_all.txt', k=5, mat_save_dir='clusters/oe_ice/', use_builtin_ice=False, use_cpb=False, use_ice=False, out_file='clusters/oe_ice/global_clusters.out')
+
+os.system("Rscript src/clust_analysis_multiple.R")
