@@ -28,7 +28,6 @@ global.clust.names = list('oe_ice'=list('0'='A2','1'='B1','2'='B3','3'='A1','4'=
                           'raw3_none'=list('0'='A1','1'='B3','2'='B2','3'='B1','4'='A2'))
 hiv.datasets = 'hiv_datasets/*.integ'
 hiv.expr     = 'expr_datasets/bhive_1_expr.txt'
-gene.data    = 'annotations/Homo_Sapiens.GRCh37.75.gtf'
 gene.expr    = 'expr_datasets/jurkat_rnaseq.tpm'
 chrsz.data   = 'annotations/hg19_chromsizes.txt'
 enh.data     = 'annotations/H3K27ac.01'
